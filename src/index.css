@@ -3,4 +3,25 @@
 
 @theme {
   --font-inter: "Inter", sans-serif;
+
+  /* color */
+  --color-yellow: #ffc971;
+  --color-pink: #fe9b72;
+  --color-violet: #b694fd;
+  --color-cyan: #9ac1f0;
+  --color-lemon: #e4ef90;
+  --color-light-gray: #dadada;
+  --color-gray: #595959;
+  --color-black: #111827;
+  --color-white: #ffffff;
+
+  /* breakpoints */
+  --breakpoint-320: 320px;
+  --breakpoint-350: 350px;
+  --breakpoint-576: 576px;
+  --breakpoint-767: 767px;
+  --breakpoint-1080: 1080px;
+  --breakpoint-1440: 1440px;
+  --breakpoint-2048: 2048px;
+  --breakpoint-1440: 1440px;
 }
