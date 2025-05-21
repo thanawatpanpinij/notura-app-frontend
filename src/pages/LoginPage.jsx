@@ -1,32 +1,67 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { login } from "../features/auth.api.js";
+import { getAllNotes } from "../features/notes.api.js";
+import useNoteContext from "../contexts/NoteContext/useNoteContext.jsx";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { setNotes } = useNoteContext();
+
   const navigate = useNavigate();
 
   async function handleLogin() {
+    setIsError(false);
+
+    if (!email || !password) return setIsError(true);
+
     try {
-      await login({ email, password });
+      setIsLoading(true);
+
+      const response = await login({ email, password });
+      console.log(response.data);
+
+      const notesResponse = await getAllNotes();
+      setNotes(notesResponse.notes);
+
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    document.title = "Notes App | Login";
+    document.title = "Notura | Login";
   }, []);
 
   return (
-    <main className="grid place-items-center min-h-[calc(100dvh-64px)] bg-gray-100">
-      <form action={handleLogin} className="flex flex-col gap-4 max-w-[426.5px] p-8 bg-white rounded-2xl">
-        <h1 className="mb-4 text-center text-2xl font-bold">Login to Your Account</h1>
+    <section className="grid place-items-center min-h-[calc(100dvh-81px)]">
+      <form
+        action={handleLogin}
+        className="flex flex-col gap-4 max-w-[426.5px] p-8 rounded-2xl"
+      >
+        <h1 className="mb-4 text-center text-2xl font-bold">
+          Login to Your Account
+        </h1>
         <label>
           Email Address
-          <input type="email" placeholder="Your email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-2 px-4 py-3 bg-gray-100 rounded-full" />
+          <input
+            type="email"
+            placeholder="Your email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full mt-2 px-4 py-3 bg-gray-100 rounded-full"
+          />
+          {isError && !email && (
+            <p className="text-red-400">Please enter your email</p>
+          )}
         </label>
         <label>
           Password
@@ -38,10 +73,16 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full mt-2 px-4 py-3 bg-gray-100 rounded-full"
           />
+          {isError && !password && (
+            <p className="text-red-400">Please enter your password</p>
+          )}
         </label>
         <div>
-          <button type="submit" className="cursor-pointer w-full my-4 px-4 py-3 text-white bg-blue-600 rounded-full transition-colors duration-200 hover:bg-blue-400">
-            Login
+          <button
+            type="submit"
+            className="cursor-pointer w-full my-4 px-4 py-3 text-white bg-blue-600 rounded-full transition-colors duration-200 hover:bg-blue-400"
+          >
+            {isLoading ? "Logging in..." : "Login"}
           </button>
           <p className="text-gray-500 text-center text-[0.875rem]">
             Don't have an account?{" "}
@@ -51,6 +92,6 @@ export default function LoginPage() {
           </p>
         </div>
       </form>
-    </main>
+    </section>
   );
 }
