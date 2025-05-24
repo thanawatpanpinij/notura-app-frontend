@@ -7,10 +7,9 @@ export default function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function getCurrentUser() {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const response = await api.get("/users/me");
-      console.log(response);
       setUser(response.data.user);
     } catch (error) {
       console.error("Not authenticated", error);

@@ -18,7 +18,7 @@ export default function Aside() {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (!userOptions.current.contains(event.target)) {
+      if (!userOptions.current?.contains(event.target)) {
         setShowOptions(false);
       }
     }
@@ -30,8 +30,7 @@ export default function Aside() {
 
   async function handleLogout() {
     try {
-      const response = await logout();
-      console.log(response);
+      await logout();
       navigate("/login");
     } catch (error) {
       console.error(error);

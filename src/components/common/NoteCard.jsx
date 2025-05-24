@@ -37,7 +37,7 @@ export default function NoteCard({ note }) {
       {showModal && (
         <div
           onClick={() => setShowModal(false)}
-          className="z-10 absolute inset-0 bg-[rgb(17,24,39,0.4)] grid place-items-center"
+          className="z-10 absolute inset-0 grid place-items-center bg-[rgb(17,24,39,0.4)] backdrop-blur-sm"
         >
           <UpdateNoteForm note={note} setShowModal={setShowModal} />
         </div>

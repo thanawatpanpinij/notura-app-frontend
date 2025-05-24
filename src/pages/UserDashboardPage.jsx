@@ -27,7 +27,7 @@ export default function UserDashboardPage() {
       {showModal && (
         <div
           onClick={() => setShowModal(false)}
-          className="absolute inset-0 bg-[rgb(17,24,39,0.4)] grid place-items-center"
+          className="absolute inset-0 grid place-items-center bg-[rgb(17,24,39,0.4)] backdrop-blur-sm"
         >
           <CreateNoteForm />
         </div>

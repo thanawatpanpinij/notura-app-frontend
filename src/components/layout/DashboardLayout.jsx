@@ -13,7 +13,7 @@ export default function DashboardLayout() {
 
   useEffect(() => {
     (async () => {
-      getCurrentUser();
+      await getCurrentUser();
       const notesResponse = await getAllNotes();
       setNotes(notesResponse.notes);
     })();
