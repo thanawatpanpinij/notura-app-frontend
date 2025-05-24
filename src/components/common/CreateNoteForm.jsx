@@ -15,19 +15,20 @@ export default function CreateNoteForm() {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     setIsError(false);
+    setIsLoading(true);
+
     if (!title || !content) return setIsError(true);
 
     try {
-      setIsLoading(true);
-      const response = await createNote({
+      await createNote({
         title,
         content,
         // tags: tags.split(",").map((tag) => tag.trim()),
         isPinned,
       });
-      console.log(response);
       const notesResponse = await getAllNotes();
       setNotes(notesResponse.notes);
     } catch (error) {
@@ -40,7 +41,7 @@ export default function CreateNoteForm() {
 
   return (
     <form
-      action={handleSubmit}
+      onSubmit={handleSubmit}
       onClick={(e) => e.stopPropagation()}
       className="flex gap-4 flex-col w-[min(80%,512px)] p-8 text-black bg-white rounded-4xl"
     >

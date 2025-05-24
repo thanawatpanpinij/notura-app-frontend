@@ -29,8 +29,7 @@ export default function UpdateNoteForm({ note, setShowModal }) {
 
     try {
       setIsLoading(true);
-      const response = await updateNote(id, { title, content, isPinned });
-      console.log(response);
+      await updateNote(id, { title, content, isPinned });
       const notesResponse = await getAllNotes();
       setNotes(notesResponse.notes);
     } catch (error) {
@@ -44,13 +43,16 @@ export default function UpdateNoteForm({ note, setShowModal }) {
   async function handleDeleteNote(id) {
     if (!id) return;
 
+    setIsLoading(true);
+
     try {
-      const response = await deleteNote(id);
-      console.log(response);
+      await deleteNote(id);
       const notesResponse = await getAllNotes();
       setNotes(notesResponse.notes);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -115,6 +117,7 @@ export default function UpdateNoteForm({ note, setShowModal }) {
       <div className="flex gap-2">
         <button
           type="submit"
+          disabled={isLoading}
           className="cursor-pointer w-[80%] px-4 py-3 text-white bg-black rounded-xl"
         >
           {isLoading ? "Saving..." : "Update note"}
@@ -122,6 +125,7 @@ export default function UpdateNoteForm({ note, setShowModal }) {
         <button
           aria-label="Delete this note"
           onClick={() => handleDeleteNote(_id)}
+          disabled={isLoading}
           className="cursor-pointer flex justify-center items-center w-[20%] bg-red-500 rounded-xl"
         >
           <LuTrash2 size={24} color="white" />

@@ -13,8 +13,11 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleSignup() {
+  async function handleSignup(e) {
+    e.preventDefault();
     setIsError(false);
+    setIsLoading(true);
+
     let errorMessage = {};
     if (!fullName) {
       errorMessage.fullName = "Please enter your name.";
@@ -42,13 +45,11 @@ export default function SignupPage() {
     if (isError) return;
 
     try {
-      setIsLoading(true);
-      const response = await createAccount({
+      await createAccount({
         fullName,
-        email,
+        email: email.toLowerCase(),
         password,
       });
-      console.log(response.data);
       navigate("/login");
     } catch (error) {
       console.error(error);
@@ -64,7 +65,7 @@ export default function SignupPage() {
   return (
     <main className="grid place-items-center min-h-[calc(100dvh-81px)]">
       <form
-        action={handleSignup}
+        onSubmit={handleSignup}
         className="flex flex-col gap-4 max-w-[426.5px] p-8 bg-white rounded-2xl"
       >
         <h1 className="mb-4 text-center text-2xl font-bold">
@@ -135,7 +136,12 @@ export default function SignupPage() {
         <div>
           <button
             type="submit"
-            className="cursor-pointer w-full my-4 px-4 py-3 text-white bg-blue-600 rounded-full transition-colors duration-200 hover:bg-blue-400"
+            disabled={isLoading}
+            className={`cursor-pointer w-full my-4 px-4 py-3 text-white rounded-full transition-colors duration-200 hover:bg-blue-400 ${
+              isLoading
+                ? "cursor-not-allowed bg-gray-400"
+                : "cursor-pointer bg-blue-600"
+            }`}
           >
             {isLoading ? "Signing up..." : "Sign up"}
           </button>

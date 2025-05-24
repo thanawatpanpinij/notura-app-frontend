@@ -3,24 +3,10 @@ import NoteCard from "../components/common/NoteCard";
 import CreateNoteForm from "../components/common/CreateNoteForm";
 import useNoteContext from "../contexts/NoteContext/useNoteContext";
 import useCreateModalContext from "../contexts/CreateModalContext/useCreateModalContext";
-import useAuthContext from "../contexts/AuthContext/useAuthContext";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
 
 export default function UserDashboardPage() {
   const { showModal, setShowModal } = useCreateModalContext();
   const { notes } = useNoteContext();
-  const { user, isLoading, getCurrentUser } = useAuthContext();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    getCurrentUser();
-  }, []);
-
-  if (!user && !isLoading) {
-    navigate("/login");
-    return;
-  }
 
   return (
     <section className="w-full px-16 py-8">
